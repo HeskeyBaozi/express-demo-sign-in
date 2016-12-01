@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    div.signup-form.registry-form
+        .logo-box
+            .logo My Achievements
+            .catchpharse 与师姐分享你的知识、经验和见解。
+        form.container-main(action='/register', method='post')
+            .form-item
+                label(for='username') 用户名
+                input.form-control#username(type='text', name='username', placeholder='用户名')
+                .error-message.center-content
+
+            .form-item
+                label(for='password') 密码
+                input.form-control#password(type='password', name='password', placeholder='密码')
+                .error-message.center-content
+
+            .form-item
+                label(for='verify-password') 重复密码
+                input.form-control#verify-password(type='password', name='verify-password', placeholder='重复密码')
+                .error-message.center-content
+
+            .form-item
+                label(for='student-number') 学号
+                input.form-control#student-number(type='text', name='student-number', placeholder='学号')
+                .error-message.center-content
+
+            .form-item
+                label(for='email') 邮箱
+                input.form-control#email(type='text', name='email', placeholder='邮箱')
+                .error-message.center-content
+
+            .form-item
+                label(for='phone') 手机
+                input.form-control#phone(type='text', name='phone', placeholder='手机')
+                .error-message.center-content
+
+            .form-item.btn-group
+                a#submit-register.form-control.btn(href='#') 注册
+                a#submit-reset.form-control.btn(href='#') 重置
+
+            .form-item.quick-registry 已有账号？
+                a(href='/login') 立即登录

@@ -1,0 +1,27 @@
+extends layout
+
+block other
+    script(src='/javascripts/validator.js')
+    script(src='/javascripts/login.js')
+
+block content
+    div.signup-form
+        .logo-box
+            .logo My Achievements
+            .catchpharse 与师姐分享你的知识、经验和见解。
+        form#login-form.container-main(action='/login', method='post')
+            .form-item
+                label(for='username') 用户名
+                input.form-control#username(type='text', name='username', placeholder='用户名')
+                .error-message.center-content
+
+            .form-item
+                label(for='password') 密码
+                input.form-control#password(type='password', name='password', placeholder='密码')
+                .error-message.center-content
+
+            .form-item
+                a#submit-login.form-control.btn(href='#') 登录
+
+            .form-item.quick-registry 没有账号？
+                a(href='/register') 立即注册
