@@ -2,30 +2,52 @@
 
 const express = require('express');
 const router = express.Router();
+const getService = require('../service');
+const debug = require('debug')('app:router');
 
-/* GET home page. */
-router.get('/', (request, response, next) => {
-    response.redirect(302, '/login');
-});
+async function getRouter() {
+    /**
+     * @type Service
+     */
+    const service = await getService();
 
-router.get('/login', (request, response, next) => {
-    response.render('login');
-});
+    /* GET home page. */
+    router.get('/', (request, response, next) => {
+        response.redirect(302, '/login');
+    });
 
-router.post('/login', (request, response, next) => {
+    router.route('/login')
+        .get((request, response, next) => {
+            response.render('login');
+        })
+        .post((request, response, next) => {
+            console.log(request.body);
+            response.send(request.body);
+        });
 
-});
 
-router.get('/register', (request, response, next) => {
-    response.render('register');
-});
+    router.route('/register')
+        .get((request, response, next) => {
+            response.render('register');
+        })
+        .post((request, response, next) => {
+            let plainObject = request.body;
+            if (plainObject.password === plainObject['verify-password']) {
+                delete plainObject['verify-password'];
+            }
 
-router.post('/register', (request, response, next) => {
+            debug(plainObject);
+            service.register(service.getRegisterInfo(plainObject))
+                .then(result => {
+                    response.send(result);
+                });
+        });
 
-});
+    router.get('/detail/:username', (request, response, next) => {
+        response.render('detail');
+    });
 
-router.get('/detail/:username', (request, response, next) => {
-    response.render('detail');
-});
+    return router;
+}
 
-module.exports = router;
+module.exports = getRouter;
