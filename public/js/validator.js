@@ -87,6 +87,20 @@ const validator = {
             test: /^.{6,12}$/,
             message: '必须6~12位'
         }
+    ],
+    'verify-password': [
+        {
+            test: /.+/,
+            message: '不能为空'
+        },
+        {
+            test: {
+                test(repeatedValue) {
+                    return repeatedValue === $('#password').val();
+                }
+            },
+            message: '两次密码输入不一致'
+        }
     ]
 };
 
@@ -101,5 +115,69 @@ function validate(type, text) {
         } else {
             resolve();
         }
+    });
+}
+
+function validateServer($ctx) {
+    return new Promise((resolve, reject) => {
+        if ($ctx.parent().hasClass('form-item-correct')) {
+            const type = $ctx[0].name;
+            if (type !== 'verify-password' && type !== 'password') {
+                $.get('/check', {
+                    type: $ctx[0].name,
+                    value: $ctx.val()
+                }, data => {
+                    if (data.success) {
+                        resolve(data);
+                    } else {
+                        $ctx.parent()
+                            .removeClass('form-item-correct')
+                            .addClass('form-item-incorrect')
+                            .children('.error-message').text(data.message);
+                        reject(data);
+                    }
+                });
+            } else {
+                resolve({success: true, message: '密码和验证密码不需要服务器验证'});
+            }
+        } else {
+            resolve({success: true, message: '格式本身已经错误, 不需要验证'});
+        }
+    });
+}
+
+function validateOne($ctx, needServer) {
+    return validate($ctx[0].name, $ctx.val())
+        .then(() => {
+            showStyle(true, $ctx);
+            return {success: true};
+        })
+        .catch(errorMessage => {
+            showStyle(false, $ctx, errorMessage);
+            return {success: false, message: errorMessage};
+        })
+        .then(validateResult => needServer ? validateServer($ctx) : validateResult);
+}
+
+function showStyle(correct, $ctx, errorMessage) {
+    if (correct) {
+        $ctx.parent().removeClass('form-item-incorrect').addClass('form-item-correct')
+            .children('.error-message').text('');
+    } else {
+        $ctx.parent().removeClass('form-item-correct').addClass('form-item-incorrect')
+            .children('.error-message').text(errorMessage);
+    }
+}
+
+function validateAll($form, needServer) {
+    $form.find('input').each((index, element) => {
+        validateOne($(element), needServer);
+    });
+}
+
+function checkAllPassValidation($form) {
+    const $elementArray = Array.from($form.find('input')).map(element => $(element));
+    return $elementArray.every($element => {
+        return $element.parent('.form-item').hasClass('form-item-correct');
     });
 }

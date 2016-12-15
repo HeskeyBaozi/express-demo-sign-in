@@ -18,8 +18,7 @@ class Storage {
      * check if there are duplicates...
      * @param registerInfo {RegisterInterface}
      */
-    async checkNoDuplicate(registerInfo) {
-
+    async getDuplicateItem(registerInfo) {
         debug('begin to find it');
         const foundUser = await this.UserModel.findOne({
             $or: [
@@ -29,9 +28,18 @@ class Storage {
                 {phone: registerInfo.phone}
             ]
         });
+        debug('the foundUser is ', foundUser);
+        return foundUser;
+    }
+
+    async isExists(type, value) {
+        debug('check if there exists ', type, ' of ', value);
+        const foundUser = await this.UserModel.findOne({
+            [type]: value
+        });
 
         debug('the foundUser is ', foundUser);
-        return !foundUser;
+        return foundUser;
     }
 
     /**
@@ -41,6 +49,7 @@ class Storage {
     async createNewUser(registerInfo) {
         const entity = new this.UserModel(registerInfo);
         await entity.save();
+        return entity;
     }
 }
 

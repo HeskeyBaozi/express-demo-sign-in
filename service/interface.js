@@ -12,4 +12,14 @@ class RegisterInterface {
     }
 }
 
+class DetailInterface {
+    constructor(mongooseResult) {
+        this['用户名'] = mongooseResult.username;
+        this['学号'] = mongooseResult['student-number'];
+        this['邮箱'] = mongooseResult.email;
+        this['电话'] = mongooseResult.phone;
+    }
+}
+
 module.exports.RegisterInterface = RegisterInterface;
+module.exports.DetailInterface = DetailInterface;

@@ -1,12 +1,14 @@
 'use strict';
 
 const express = require('express');
+const session = require('express-session');
+const MongoStroe = require('connect-mongo')(session);
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const getRouter = require('./routes/');
+const getRouter = require('./routes');
 
 async function getApp() {
     const app = express();
@@ -16,11 +18,20 @@ async function getApp() {
     app.set('view engine', 'pug');
 
     // uncomment after placing your favicon in /public
-    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+    app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(cookieParser());
+    app.use(session({
+        secret: 'Zhiyu He',
+        name: 'sid',
+        store: new MongoStroe({
+            url: 'mongodb://localhost/SignIn'
+        }),
+        resave: false,
+        saveUninitialized: false
+    }));
     app.use(require('less-middleware')(path.join(__dirname, 'public')));
     app.use(express.static(path.join(__dirname, 'public')));
 

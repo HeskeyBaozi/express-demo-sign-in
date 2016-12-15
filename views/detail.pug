@@ -6,18 +6,10 @@ block content
             .logo My Achievements
             .catchpharse 与师姐分享你的知识、经验和见解。
         .container-main
-            .form-item
-                span 用户名:
-
-            .form-item
-                span 学号:
-
-            .form-item
-                span 手机:
-
-            .form-item
-                span 邮箱:
+            each value, key in userInfo
+                .form-item.detail-control
+                    span.key #{key}
+                    span.value.center-content #{value}
 
             .form-item
                 a#submit-logout.form-control.btn(href='#') 退出登录
-

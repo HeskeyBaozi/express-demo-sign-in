@@ -168,6 +168,24 @@ a {
     color: gray;
   }
 
+  .detail-control {
+    display: flex;
+    .key {
+      text-align: right;
+      font-weight: bold;
+      flex-basis: 110px;
+      &:after {
+        display: inline-block;
+        content: '';
+        width: 10px;
+      }
+    }
+
+    .value {
+      text-align: left;
+    }
+  }
+
   label {
     display: none;
   }
