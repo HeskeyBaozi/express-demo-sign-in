@@ -21,14 +21,19 @@ $(() => {
             });
 
         if (checkAllPassValidation($form)) {
-            window.fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                },
-                body: $.param(formObject)
-            }).then(res => res.text()).then(data => {
-                console.log(data);
+            window.fetch('/regist',
+                {
+                    credentials: 'include',
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                    body: $.param(formObject)
+                }
+            ).then(res => res.json()).then(rest => {
+                if (rest.success) {
+                    window.location.assign(`/detail?username=${rest.message}`);
+                } else {
+                    MessageFailure(rest.message);
+                }
             });
         } else {
             validateAll($form, true);

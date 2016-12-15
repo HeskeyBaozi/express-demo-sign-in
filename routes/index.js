@@ -30,7 +30,7 @@ async function getRouter() {
                     if (errorCode.success) {
                         debug('login success for ', errorCode.body.username);
                         request.session.username = errorCode.body.username;
-                        response.send(new Restful(true));
+                        response.send(new Restful(true, request.session.username));
                     } else {
                         debug('login fail for ', errorCode.body);
                         if (errorCode.body.where === 'password') {
@@ -45,7 +45,7 @@ async function getRouter() {
                 });
         });
 
-    router.route('/register')
+    router.route('/regist')
         .get((request, response, next) => {
             response.render('register');
         })
@@ -58,8 +58,13 @@ async function getRouter() {
             debug(plainObject);
             service
                 .register(service.getRegisterInfo(plainObject))
-                .then(result => {
-                    response.send(result);
+                .then(errorCode => {
+                    if (errorCode.success) {
+                        request.session.username = errorCode.body.username;
+                        response.send(new Restful(true, request.session.username));
+                    } else {
+                        response.send(new Restful(false, errorCode.body));
+                    }
                 });
         });
 

@@ -46,7 +46,7 @@ class Service {
      * @param registerInfo {RegisterInterface}
      */
     async register(registerInfo) {
-        if (!this.storage.getDuplicateItem(registerInfo)) {
+        if (!await this.storage.getDuplicateItem(registerInfo)) {
             debug('there is no duplicate, continue...');
             return new ErrorCode(true, await this.storage.createNewUser(registerInfo));
         }

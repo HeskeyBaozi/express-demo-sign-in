@@ -3,9 +3,6 @@ html
     head
         title= title
         link(rel='stylesheet', href='/css/style.css')
-        script(src='/lib/jquery.js')
-        script(src='/lib/lodash.min.js')
-        block other
     body
         div#background-slideshow
             .slide
@@ -17,3 +14,11 @@ html
 
             .footer-item
                 a 15331097
+
+        div.global-message.center-content
+            div.message-cover.center-content
+
+        script(src='/lib/jquery.js')
+        script(src='/lib/lodash.min.js')
+        script(src='/js/message.js')
+        block other

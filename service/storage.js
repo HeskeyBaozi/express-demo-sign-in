@@ -47,8 +47,10 @@ class Storage {
      * @param registerInfo {RegisterInterface}
      */
     async createNewUser(registerInfo) {
+        debug('creating entity ', registerInfo);
         const entity = new this.UserModel(registerInfo);
         await entity.save();
+        debug('entity saved: ', entity);
         return entity;
     }
 }

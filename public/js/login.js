@@ -20,10 +20,14 @@ $(() => {
         ).then(res => res.json())
             .then(rest => {
                 if (rest.success) {
-                    window.location.assign('/detail');
+                    window.location.assign(`/detail?username=${rest.message}`);
                 } else {
                     showStyle(false, $(`#${rest.message.where}`), rest.message.cause);
                 }
             });
     });
+
+    if (location.search === '?from=logout') {
+        MessageSuccess('成功退出登录');
+    }
 });

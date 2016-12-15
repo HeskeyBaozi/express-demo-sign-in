@@ -214,3 +214,34 @@ a {
     }
   }
 }
+
+.global-message {
+  font-size: 16px;
+  position: fixed;
+  z-index: 1010;
+  width: 100%;
+  top: 24px;
+}
+
+.message-cover {
+  background: rgba(255, 255, 255, 0.93);
+  height: 24px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: content-box;
+}
+
+.message-yes {
+  &:before {
+    content: url('/img/ok_16px_1143827_easyicon.net.ico');
+    margin-right: 5px;
+  }
+}
+
+.message-no {
+  &:before {
+    content: url('/img/no_16px_1188116_easyicon.net.ico');
+    margin-right: 5px;
+  }
+}

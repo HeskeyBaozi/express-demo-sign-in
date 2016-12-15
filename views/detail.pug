@@ -1,5 +1,8 @@
 extends layout
 
+block other
+    script(src='/js/detail.js')
+
 block content
     div.signup-form
         .logo-box
@@ -9,7 +12,10 @@ block content
             each value, key in userInfo
                 .form-item.detail-control
                     span.key #{key}
-                    span.value.center-content #{value}
+                    if key === '用户名'
+                        span#detail-username.value.center-content #{value}
+                    else
+                        span.value.center-content #{value}
 
             .form-item
                 a#submit-logout.form-control.btn(href='#') 退出登录
