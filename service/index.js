@@ -1,6 +1,7 @@
 'use strict';
 
 const debug = require('debug')('app:service');
+const crypto = require('crypto');
 const getStorage = require('./storage.js');
 const Interface = require('./interface.js');
 
@@ -30,7 +31,7 @@ class Service {
         }
 
         debug('user in db is', userInDB);
-        if (userInDB.password === userObject.password) {
+        if (userInDB.password === getHash(userObject.password)) {
             debug('correct password: ', userObject.password);
             return new ErrorCode(true, userInDB);
         } else {
@@ -48,6 +49,7 @@ class Service {
     async register(registerInfo) {
         if (!await this.storage.getDuplicateItem(registerInfo)) {
             debug('there is no duplicate, continue...');
+            registerInfo.password = getHash(registerInfo.password);
             return new ErrorCode(true, await this.storage.createNewUser(registerInfo));
         }
         return new ErrorCode(false, 'There are some duplicates');
@@ -75,6 +77,10 @@ class Service {
     getDetailInfo(mongooseResult) {
         return new Interface.DetailInterface(mongooseResult);
     }
+}
+
+function getHash(password) {
+    return crypto.createHash('md5').update(password).digest('hex');
 }
 
 async function getService() {

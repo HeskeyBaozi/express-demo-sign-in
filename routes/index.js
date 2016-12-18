@@ -18,6 +18,20 @@ async function getRouter() {
      */
     const service = await getService();
 
+    router.get('*', (request, response, next) => {
+        debug('debug*', request.method, request.url, request.sessionID);
+        if (request.session.username) {
+            if (request.params[0] === '/detail') {
+                next();
+            } else
+                response.redirect(302, `/detail?username=${request.session.username}`);
+        } else if (request.params[0] === '/login' || request.params[0] === '/regist' || request.params[0] === '/check') {
+            next();
+        } else {
+            response.redirect(302, '/login');
+        }
+    });
+
     /* GET home page. */
     router.route('/login')
         .get((request, response, next) => {
@@ -80,10 +94,6 @@ async function getRouter() {
             });
     });
 
-    router.get('*', (request, response, next) => {
-        debug('debug*', request.method, request.url, request.sessionID);
-        request.session.username ? next() : response.redirect(302, '/login');
-    });
 
     router.get('/detail', (request, response, next) => {
         service

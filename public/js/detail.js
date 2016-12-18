@@ -11,7 +11,7 @@ $(() => {
         ).then(res => res.json())
             .then(rest => {
                 if (rest.success) {
-                    window.location.assign('/login?from=logout');
+                    window.location.assign('/login?fro m=logout');
                 } else {
                     showStyle(false, $(`#${rest.message.where}`), rest.message.cause);
                 }
