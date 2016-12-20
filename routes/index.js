@@ -47,13 +47,7 @@ async function getRouter() {
                         response.send(new Restful(true, request.session.username));
                     } else {
                         debug('login fail for ', errorCode.body);
-                        if (errorCode.body.where === 'password') {
-                            errorCode.body.cause = '密码不正确';
-                        } else if (errorCode.body.where === 'username') {
-                            errorCode.body.cause = '找不到该用户';
-                        } else {
-                            errorCode.body.cause = '其他原因';
-                        }
+                        errorCode.body.cause = '错误的用户名或者密码';
                         response.send(new Restful(false, errorCode.body));
                     }
                 });

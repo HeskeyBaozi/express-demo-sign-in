@@ -22,7 +22,7 @@ $(() => {
                 if (rest.success) {
                     window.location.assign(`/detail?username=${rest.message}`);
                 } else {
-                    showStyle(false, $(`#${rest.message.where}`), rest.message.cause);
+                    showStyle(false, $('.form-item input'), rest.message.cause);
                 }
             });
     });

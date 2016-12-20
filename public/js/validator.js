@@ -84,6 +84,10 @@ const validator = {
             message: '不能为空'
         },
         {
+            test: /^[a-z0-9_\-]*$/i,
+            message: '出现了其他特殊符号'
+        },
+        {
             test: /^.{6,12}$/,
             message: '必须6~12位'
         }
