@@ -30,7 +30,10 @@ async function getApp() {
             url: 'mongodb://localhost/SignIn'
         }),
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7// 7 days
+        }
     }));
     app.use(require('less-middleware')(path.join(__dirname, 'public')));
     app.use(express.static(path.join(__dirname, 'public')));
